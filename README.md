@@ -48,6 +48,13 @@ If you want to make contributions, you are expected to follow the following guid
 
 Cimrec uses project uses [Package Oriented Design](https://www.ardanlabs.com/blog/2017/02/package-oriented-design.html).
 
+[Package layout](https://medium.com/@benbjohnson/standard-package-layout-7cdbc8391fc1) follows the following guidelines as described at the article. 
+
+* Root package is for domain types
+* Group subpackages by dependency
+* Use a shared mock subpackage
+* Main package ties together dependencies
+
 ### Code Style
 
 We follow the general guidelines of the [Clean Code: A Handbook of Agile Software Craftsmanship](https://www.amazon.com.tr/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882)
