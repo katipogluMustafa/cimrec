@@ -55,7 +55,7 @@ Cimrec uses project uses [Package Oriented Design](https://www.ardanlabs.com/blo
 * Use a shared mock subpackage
 * Main package ties together dependencies
 
-### Code Style
+### Clean Code
 
 We follow the general guidelines of the [Clean Code: A Handbook of Agile Software Craftsmanship](https://www.amazon.com.tr/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882)
 
