@@ -74,4 +74,7 @@ In summary:
 
 * Files should be 50-100lines on average, at max 500
 
+### Code Style
+
+We use [pep8](https://www.python.org/dev/peps/pep-0008/) code styling standard. 
  
