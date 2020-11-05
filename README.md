@@ -2,13 +2,22 @@
 
 > Cimrec Türkçe 'simrek' diye telafuz edilir.
 
-Cimrec is a framework of recommendation system algorithms. This framework help you to make recommendation in any programming language using the respected API for the target langauge. 
+Cimrec is a framework of recommendation system algorithms. This framework help you to make recommendations in any programming language using the respected API for the target langauge. 
 
 ## Why use cimrec? 
 
-Cimrec gets your data as input, and based on your choice of algorithm and accuracy metrics, a high quality recommendation is provided.
+Cimrec gets your data as input, and based on your choice of algorithms and accuracy metrics, a high quality recommendation is provided.
 
 Cimrec also provides caching like mechanisms in order to use as minimum resources as possible.
+
+
+### Example Use Case
+
+* Given a user's history of movie ratings in netflix, we provide list of movies to recommend the user.
+
+* Given a user's list of item purchases in amazon, we provide list of products to recommend to the target user.
+
+* Given a movie, we provide list of similar movies to recommend the users who has watched the movie.
 
 ## Current Progress
 
