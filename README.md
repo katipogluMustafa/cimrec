@@ -44,6 +44,12 @@ The aim of this phase is to create a better base for all future phases by conver
 
 If you want to make contributions, you are expected to follow the following guidelines.
 
+### Project Structure
+
+Cimrec uses project uses [Package Oriented Design](https://www.ardanlabs.com/blog/2017/02/package-oriented-design.html).
+
+### Code Style
+
 We follow the general guidelines of the [Clean Code: A Handbook of Agile Software Craftsmanship](https://www.amazon.com.tr/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882)
 
 In summary: 
