@@ -4,6 +4,9 @@ class Interval:
     self.__interval_beginning = interval_beginning_datetime
     self.__interval_end = interval_end_datetime
 
+  def get_interval(self):
+    return self.__interval_beginning, self.__interval_end
+
   def is_valid(self):
     return True
 
