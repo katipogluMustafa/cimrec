@@ -10,6 +10,10 @@ class NetflixDataset(Dataset):
     super().__init__(ratings_file_path, movies_file_path)
     self.ratings_column_names = ('user_id', 'rating', 'timestamp')
     self.movies_column_names = ('item_id', 'year', 'title')
+    self.__lowest_rating, self.__highest_rating, self.__rating_increment = 1, 5, 1
+
+  def get_dataset_rating_range(self):
+    return self.__lowest_rating, self.__highest_rating, self.__rating_increment
 
   def load_movies(self):
     movies = self.__read_movies_data_from_file()
