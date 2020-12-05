@@ -28,21 +28,21 @@ class TestDatasetOptimizer(unittest.TestCase):
 
   def test_clean_optimizer(self):
     dataset_optimizer = DatasetOptimizer(self.dataset)
-    self.assertTrue(dataset_optimizer.movies.empty, True)
-    self.assertTrue(dataset_optimizer.ratings.empty, True)
-    self.assertTrue(dataset_optimizer.movie_ratings.empty, True)
+    self.assertTrue(dataset_optimizer.__movies.empty, True)
+    self.assertTrue(dataset_optimizer.__ratings.empty, True)
+    self.assertTrue(dataset_optimizer.__movie_ratings.empty, True)
 
     dataset_optimizer.get_movies()
     dataset_optimizer.clean()
-    self.assertTrue(dataset_optimizer.movies.empty, True)
+    self.assertTrue(dataset_optimizer.__movies.empty, True)
 
     dataset_optimizer.get_ratings()
     dataset_optimizer.clean()
-    self.assertTrue(dataset_optimizer.ratings.empty, True)
+    self.assertTrue(dataset_optimizer.__ratings.empty, True)
 
     dataset_optimizer.get_movie_ratings()
     dataset_optimizer.clean()
-    self.assertTrue(dataset_optimizer.movie_ratings.empty, True)
+    self.assertTrue(dataset_optimizer.__movie_ratings.empty, True)
 
 
 if __name__ == '__main__':

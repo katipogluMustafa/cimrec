@@ -7,6 +7,10 @@ class MovielensDataset(Dataset):
     super().__init__(ratings_file_path, movies_file_path)
     self.ratings_column_names = ('user_id', 'item_id', 'rating', 'timestamp')
     self.movies_column_names = ('item_id', 'title', 'genres')
+    self.__lowest_rating, self.__highest_rating, self.__rating_increment = 0.5, 5, 0.5
+
+  def get_dataset_rating_range(self):
+    return self.__lowest_rating, self.__highest_rating, self.__rating_increment
 
   def load_movies(self) -> pd.DataFrame:
     if not Dataset.is_valid_input_file(self.movies_file_path):
