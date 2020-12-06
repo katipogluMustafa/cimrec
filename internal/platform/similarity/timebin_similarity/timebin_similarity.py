@@ -15,11 +15,28 @@ class TimebinSimilarity:
                neighbour_timebin_size_increment=1,
                min_n_common_between_users=3):
     self.optimized_dataset = optimized_dataset
-    self.dataset_user_operator = DatasetUserOperator(self.optimized_dataset.get_ratings())
+    self.__dataset_user_operator = DatasetUserOperator(self.optimized_dataset.get_ratings())
     self.__neighbour_min_timebin_size = neighbour_min_timebin_size
     self.__neighbour_max_timebin_size = neighbour_max_timebin_size
     self.__neighbour_timebin_size_increment = neighbour_timebin_size_increment
     self.__min_n_common_between_neighbour_users = min_n_common_between_users
+
+  def get_neighbours(self, user_id, movie_id, target_timebin_size=43):
+    user_history = self.__dataset_user_operator.get_user_rating_history(user_id)
+    target_movie_index = Timebin.find_movie_index_in_user_history(user_history, movie_id)
+    if target_movie_index < 0:
+      return 0.0
+    elif target_movie_index > target_timebin_size:
+      timebin_size = target_timebin_size
+      timebin_starting_index = target_movie_index - timebin_size
+    elif 0 < target_movie_index < len(user_history):
+      timebin_size = target_movie_index + 1
+      timebin_starting_index = 0
+    else:
+      return 0.0
+    timebin = Timebin(self.__dataset_user_operator, user_id, timebin_starting_index, timebin_size)
+    timebin_neighbours = self.get_timebin_neighbours(timebin, movie_id)
+    return timebin_neighbours[['neighbour_id', 'pearson_corr']].set_index('neighbour_id')
 
   def get_timebin_neighbours(self, timebin, movie_id):
     if timebin.get_timebin_df().empty:
@@ -37,7 +54,7 @@ class TimebinSimilarity:
     return neighbour_id_list
 
   def get_all_timebins_with_target_movie(self, user_id: int, movie_id: int) -> list:
-    user_history = self.dataset_user_operator.get_user_rating_history(user_id)
+    user_history = self.__dataset_user_operator.get_user_rating_history(user_id)
     neighbour_timebins = list()
     for timebin_size in range(self.__neighbour_min_timebin_size,
                               self.__neighbour_max_timebin_size,
@@ -62,7 +79,7 @@ class TimebinSimilarity:
     neighbour_id_list = []
     for possible_neighbour_id, n_rating in n_common_with_users.items():
       if n_rating > self.__min_n_common_between_neighbour_users:
-        if self.dataset_user_operator.get_user_rating_value(possible_neighbour_id, movie_id) != 0:
+        if self.__dataset_user_operator.get_user_rating_value(possible_neighbour_id, movie_id) != 0:
           if possible_neighbour_id != user_id:
             neighbour_id_list.append(possible_neighbour_id)
     return neighbour_id_list
@@ -102,8 +119,11 @@ class TimebinSimilarity:
     neighbour_timebins = list()
     n_movies = len(user_history)
     for i in range(0, n_movies, timebin_size):
-      timebin = Timebin(self.dataset_user_operator, user_id, i, timebin_size)
+      timebin = Timebin(self.__dataset_user_operator, user_id, i, timebin_size)
       timebin_df = timebin.get_timebin_df(user_history)
       if movie_id in timebin_df.index:
         neighbour_timebins.append(timebin)
     return neighbour_timebins
+
+  def get_dataset_optimizer(self):
+    return self.optimized_dataset

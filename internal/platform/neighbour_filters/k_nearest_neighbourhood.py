@@ -19,6 +19,7 @@ class KNearestNeighbours:
   def get_k_nearest(neighbours: pd.DataFrame, k: int, correlation_column_name='correlation') -> pd.DataFrame:
     if neighbours is None or neighbours.empty:
       return pd.DataFrame()
-    neighbours.sort_values(by=correlation_column_name, ascending=False, inplace=True)
-    k_nearest_neighbours = neighbours.iloc[1:k + 1]
+    neighbours_df = neighbours.copy(deep=True)
+    neighbours_df.sort_values(by=correlation_column_name, ascending=False, inplace=True)
+    k_nearest_neighbours = neighbours_df.iloc[1:k + 1]
     return k_nearest_neighbours

@@ -30,9 +30,16 @@ class Timebin:
     timebin.drop(movie_id, inplace=True, errors='ignore')
     return timebin
 
-  def find_timebin_starting_index_with_movie(self, movie_id, timebin_size):
-    timebin_last_index = self.__find_movie_index_in_user_history(movie_id)
+  @staticmethod
+  def find_timebin_starting_index_with_movie(rating_history, movie_id, timebin_size):
+    timebin_last_index = Timebin.find_movie_index_in_user_history(rating_history, movie_id)
     return timebin_last_index - timebin_size
+
+  @staticmethod
+  def find_movie_index_in_user_history(ratings_history, movie_id):
+    ratings_history.reset_index(inplace=True)
+    timebin_last_index = np.where(ratings_history["item_id"] == movie_id)[0][0]
+    return timebin_last_index
 
   def get_timebin_range(self):
     return self.__timebin_starting_index, self.__timebin_size
@@ -72,9 +79,3 @@ class Timebin:
     denominator *= math.sqrt(((merged['rating_y'] - timebin_b_user_avg) ** 2).sum())
     pearson = numerator / denominator if denominator != 0 else 0
     return pearson
-
-  def __find_movie_index_in_user_history(self, movie_id):
-    ratings_history = self.__dataset_user_operator.get_user_rating_history(self.__user_id)
-    ratings_history.reset_index(inplace=True)
-    timebin_last_index = np.where(ratings_history["item_id"] == movie_id)[0][0]
-    return timebin_last_index
