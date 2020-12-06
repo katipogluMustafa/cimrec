@@ -24,6 +24,10 @@ class Interval:
 
     return True
 
+  def get_interval_length_in_days(self):
+    return abs((self.__interval_beginning - self.__interval_end).days)
+
+
   def __is_any_end_none(self):
     return self.__interval_beginning is None or self.__interval_end is None
 
