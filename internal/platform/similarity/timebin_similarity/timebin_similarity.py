@@ -35,8 +35,7 @@ class TimebinSimilarity:
     else:
       return 0.0
     timebin = Timebin(self.__dataset_user_operator, user_id, timebin_starting_index, timebin_size)
-    timebin_neighbours = self.get_timebin_neighbours(timebin, movie_id)
-    return timebin_neighbours[['neighbour_id', 'pearson_corr']].set_index('neighbour_id')
+    return self.get_timebin_neighbours(timebin, movie_id)
 
   def get_timebin_neighbours(self, timebin, movie_id):
     if timebin.get_timebin_df().empty:
