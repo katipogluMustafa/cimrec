@@ -25,7 +25,7 @@ class TimebinSimilarity:
     user_history = self.__dataset_user_operator.get_user_rating_history(user_id)
     target_movie_index = Timebin.find_movie_index_in_user_history(user_history, movie_id)
     if target_movie_index < 0:
-      return 0.0
+      return pd.DataFrame()
     elif target_movie_index > target_timebin_size:
       timebin_size = target_timebin_size
       timebin_starting_index = target_movie_index - timebin_size
@@ -33,7 +33,7 @@ class TimebinSimilarity:
       timebin_size = target_movie_index + 1
       timebin_starting_index = 0
     else:
-      return 0.0
+      return pd.DataFrame()
     timebin = Timebin(self.__dataset_user_operator, user_id, timebin_starting_index, timebin_size)
     return self.get_timebin_neighbours(timebin, movie_id)
 

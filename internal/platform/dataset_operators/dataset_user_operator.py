@@ -45,8 +45,8 @@ class DatasetUserOperator:
       return pd.Series(dtype=object)
 
   def get_user_rating_value(self, user_id:int, movie_id:int):
-    user_rating_record = self.get_user_rating_record(user_id, movie_id)
-    return user_rating_record['rating'] if not user_rating_record.empty else 0
+    history = self.get_user_rating_record(user_id, movie_id)
+    return history.values[0, 2] if not history.empty else 0
 
   def get_rating_timestamp(self, user_id: int, movie_id: int):
     user_rating = self.get_user_rating_record(user_id, movie_id)
@@ -67,8 +67,19 @@ class DatasetUserOperator:
     return user_ratings.rating.mean() if not user_ratings.empty else 0
 
   def get_user_random_movie_from_history(self, user_id: int) -> int:
-    user_rating_history = self.get_user_rating_history(user_id)
-    return random.choice(user_rating_history['item_id'].values.tolist()) if not user_rating_history.empty else 0
+    rated_movie_ids = self.get_rated_movie_ids(user_id)
+    if not rated_movie_ids:
+      return 0
+    return random.choice(rated_movie_ids)
+
+  def get_user_random_movie_list_from_history(self, user_id:int, n_movies:int)->list:
+    rated_movie_ids = self.get_rated_movie_ids(user_id)
+    if not rated_movie_ids:
+      return list()
+    return random.choices(rated_movie_ids, k=n_movies)
+
+  def get_rated_movie_ids(self, user_id:int):
+    return self.get_user_rating_history(user_id).reset_index()['item_id'].values.tolist()
 
   @staticmethod
   def __is_positive_number(n_users):
@@ -93,4 +104,5 @@ class DatasetUserOperator:
     return pd.DataFrame(self.__ratings.groupby('user_id')['rating'].mean())
 
   def __get_target_user_movie_rating(self, user_id, movie_id):
-    return self.get_user_rating_history(user_id).iloc[movie_id]
+    history = self.get_user_rating_history(user_id).reset_index()
+    return history.loc[history['item_id'] == movie_id]
